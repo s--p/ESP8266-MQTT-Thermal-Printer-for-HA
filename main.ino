@@ -111,7 +111,18 @@ if (strcmp(topic,mqtt_listen_topic_textlineheight)==0){
 
       printer.printBarcode(barcode_value, (uint8_t) barcode_type);
   } 
-
+  // topic to set upside down printing (0 | 1)
+  if (strcmp(topic,mqtt_listen_topic_textupsidedown)==0){
+      char c = '0';
+      for (int i=0;i<length;i++) { 
+        c = payload[i];   
+      }
+      if (c == '1') {
+        printer.upsideDownOn();
+      } else {
+        printer.upsideDownOff();
+      } 
+  }
 
 
 
@@ -175,6 +186,7 @@ void loop() {
       mqtt.subscribe(mqtt_listen_topic_textbold);
       mqtt.subscribe(mqtt_listen_topic_textunderline);
       mqtt.subscribe(mqtt_listen_topic_barcode);
+      mqtt.subscribe(mqtt_listen_topic_textupsidedown);
     } else {
       printer.println(F("MQTT connection failed"));
       printer.feed(1);
