@@ -22,6 +22,13 @@ PubSubClient mqtt(client);
 SoftwareSerial mySerial(RX_PIN, TX_PIN); 
 Adafruit_Thermal printer(&mySerial);
 
+bool upsideDownMode = false;  // Variable, um den UpsideDown-Modus zu verfolgen
+#define MAX_COLUMN_WIDTH 32  // Beispielwert, falls dein Drucker 32 Zeichen pro Zeile druckt.
+// Maximum Anzahl Zeilen die im Buffer gespeichert werden können
+#define MAX_LINES 10
+// Maximum Zeichen pro Zeile
+#define MAX_CHARS_PER_LINE 33  // 32 Zeichen + Nullterminator
+
 void callback(char* topic, byte* payload, unsigned int length) {
 
   // set textlineheight
@@ -111,31 +118,64 @@ if (strcmp(topic,mqtt_listen_topic_textlineheight)==0){
 
       printer.printBarcode(barcode_value, (uint8_t) barcode_type);
   } 
-  // topic to set upside down printing (0 | 1)
-  if (strcmp(topic,mqtt_listen_topic_textupsidedown)==0){
-      char c = '0';
-      for (int i=0;i<length;i++) { 
-        c = payload[i];   
-      }
-      if (c == '1') {
-        printer.upsideDownOn();
-      } else {
-        printer.upsideDownOff();
-      } 
+  // Topic zum Umschalten des UpsideDown-Drucks
+  if (strcmp(topic, mqtt_listen_topic_textupsidedown) == 0) {
+    char c = '0';
+    for (int i = 0; i < length; i++) { 
+      c = payload[i];   
+    }
+    if (c == '1') {
+      printer.upsideDownOn();
+      upsideDownMode = true;  // UpsideDown aktivieren
+    } else {
+      printer.upsideDownOff();
+      upsideDownMode = false;  // UpsideDown deaktivieren
+    } 
   }
 
-
-
-// topic to print text
- if (strcmp(topic,mqtt_listen_topic_text2print)==0){
-//    printer.print(F("Message arrived:\n"));           //Don't need this one before every message
-    for (int i=0;i<length;i++) {
-      printer.print((char)payload[i]);
+  // Topic zum Drucken von Text
+  if (strcmp(topic, mqtt_listen_topic_text2print) == 0) {
+    if (upsideDownMode) {
+      // Arrays für die Zeilen
+      char lines[MAX_LINES][MAX_CHARS_PER_LINE];
+      int currentLine = 0;
+      int currentChar = 0;
+      
+      // Text in Zeilen aufteilen
+      for (int i = 0; i < length && currentLine < MAX_LINES; i++) {
+        char c = (char)payload[i];
+        
+        // Wenn Zeilenende oder Zeile voll
+        if (c == '\n' || currentChar >= MAX_CHARS_PER_LINE - 1) {
+          lines[currentLine][currentChar] = '\0';
+          currentLine++;
+          currentChar = 0;
+        } else {
+          lines[currentLine][currentChar] = c;
+          currentChar++;
+        }
+      }
+      // Letzte Zeile abschließen wenn nötig
+      if (currentChar > 0 && currentLine < MAX_LINES) {
+        lines[currentLine][currentChar] = '\0';
+        currentLine++;
+      }
+      
+      // Zeilen in umgekehrter Reihenfolge drucken
+      printer.feed(1);
+      for (int i = currentLine - 1; i >= 0; i--) {
+        printer.println(lines[i]);
+      }
+      printer.feed(1);
+    } else {
+      // Normaler Druck ohne Zeilenumkehr
+      for (int i = 0; i < length; i++) {
+        printer.write(payload[i]);
+      }
+      printer.println();
     }
-    printer.print(F("\n"));
- }
-
-} 
+  }
+}
 
 void setup() {
 
