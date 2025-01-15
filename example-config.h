@@ -23,3 +23,5 @@ const char* mqtt_listen_topic_papercheck = "printer/thermal_papercheck"; // on t
 //
 char mqtt_text_size                  = 'S'; // Letter size - default is S, options are S for Small, M for Medium, L for Large set it via mqtt 
 const unsigned int mqtt_row_spacing  = 24; // Spacing between rows - default is 24, values range from minimum of 24 and maximum of 64 set it via mqtt 
+//
+const char* mqtt_listen_topic_textupsidedown = "printer/thermal_text_upsidedown";
