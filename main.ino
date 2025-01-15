@@ -5,8 +5,8 @@
 #include "Adafruit_Thermal.h"
 #include "SoftwareSerial.h"
 
-#define RX_PIN 5 // RX GPIO-Pin of your Microcontroller
-#define TX_PIN 4 // TX GPIO-Pin of your Microcontroller 
+#define RX_PIN 3 // RX GPIO-Pin of your Microcontroller (ESP8266 Wemos D1 Mini)
+#define TX_PIN 1 // TX GPIO-Pin of your Microcontroller (ESP8266 Wemos D1 Mini)
 
 #define MAX_TOPIC_LENGTH 50
 #define MAX_PAYLOAD_LENGTH 10
@@ -91,7 +91,7 @@ if (strcmp(topic,mqtt_listen_topic_textlineheight)==0){
  // topic to print barcode 
  if (strcmp(topic,mqtt_listen_topic_barcode)==0){
       uint8_t barcode_type = 0;  
-      char barcode_value[255] = ""; // some borcodes allows only 255 digits(!) but not for our 58mm printer ;)
+      char barcode_value[255] = ""; // some barcodes allows only 255 digits(!) but not for our 58mm printer ;)
       int y = 0;
       bool barcodeseperatorfound = false; 
       for (int i=0;i<length;i++) {
@@ -117,7 +117,7 @@ if (strcmp(topic,mqtt_listen_topic_textlineheight)==0){
 
 // topic to print text
  if (strcmp(topic,mqtt_listen_topic_text2print)==0){
-    printer.print(F("Message arrived:\n"));
+//    printer.print(F("Message arrived:\n"));           //Don't need this one before every message
     for (int i=0;i<length;i++) {
       printer.print((char)payload[i]);
     }
