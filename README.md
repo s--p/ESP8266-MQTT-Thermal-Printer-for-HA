@@ -16,7 +16,7 @@ in Version 2.1 we can:
 - receive the paperload status via mqtt
 
 in Version2.2 we can:
--Print upside down and have lines reordered in correct way
+- Print upside down and have lines reordered in correct way
 
 Although COMPLETELY unnecessary, this printer is really fun addtion to it allowing you to expand your system output options and it would be great to have it in future as part of the notification platform. BUT that is out of my (I'l just a sales guy tinkering) programming capabilities.
 
