@@ -1,5 +1,5 @@
-# ESP8266 MQTT Thermal Printer for HA (V2.1)
-This project is fork from [ESP8266 MQTT Thermal Printer](https://github.com/BeardedTinker/ESP8266-MQTT-Thermal-Printer-for-HA) and a I really would like to thank author(s) for it.
+# ESP8266 MQTT Thermal Printer for HA (V2.2)
+This project is fork from [ESP8266 MQTT Thermal Printer](https://github.com/BeardedTinker/ESP8266-MQTT-Thermal-Printer-for-HA) and a I really would like to thank the author(s) for it.
 
 Here I'll try to improve it to the best of my abilities for specific use - adding it to [Home Assistant] as printer for anything that wou want to print from it.
 
