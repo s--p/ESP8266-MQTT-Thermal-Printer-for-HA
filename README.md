@@ -1,5 +1,5 @@
 # ESP8266 MQTT Thermal Printer for HA (V2.1)
-This project is fork from [ESP8266 MQTT Thermal Printer](https://github.com/HutchieV/ESP8266-MQTT-Thermal-Printer) and a I really would like to thatnk original author for it.
+This project is fork from [ESP8266 MQTT Thermal Printer](https://github.com/BeardedTinker/ESP8266-MQTT-Thermal-Printer-for-HA) and a I really would like to thank author(s) for it.
 
 Here I'll try to improve it to the best of my abilities for specific use - adding it to [Home Assistant] as printer for anything that wou want to print from it.
 
@@ -13,7 +13,8 @@ in Version 2 we can:
 in Version 2.1 we can: 
 - print barcodes via mqtt
 - receive the paperload status via mqtt
-
+in Version2.2 we can:
+-Print upside down and have lines reordered in correct way
 
 Although COMPLETELY unnecessary, this printer is really fun addtion to it allowing you to expand your system output options and it would be great to have it in future as part of the notification platform. BUT that is out of my (I'l just a sales guy tinkering) programming capabilities.
 
@@ -84,7 +85,8 @@ In order to compile this project, you need to rename example-config.h to config.
 - *mqtt_text_size* - MQTT topic for initial size of the text we will print, S for Small, M for Medium, L for Large
 - *mqtt_row_spacing* - MQTT topic of initial row spacing with default being 32, minimum 24 and maximum 64
 - *mqtt_listen_topic_barcode* - MQTT topic to print barcode in payload should be: `<barcodetype>|<barcode_value>` e.g. `7|HelloMaster` here 4 is barcodetype CODE93
-- *mqtt_listen_topic_papercheck* - MQTT topic (readonly!) sends every defined milliseconds *papercheck_milliseconds* the status of the paperload *yes* | *no* 
+- *mqtt_listen_topic_papercheck* - MQTT topic (readonly!) sends every defined milliseconds *papercheck_milliseconds* the status of the paperload *yes* | *no*
+- *mqtt_listen_topic_textupsidedown* - *1* = upside down,<br> *0* = regular orientation (use printer/thermal_text_upsidedown topic)
 
 ## MQTT Topics
 | mqtt topic\* | payload |
@@ -98,8 +100,10 @@ In order to compile this project, you need to rename example-config.h to config.
 |*mqtt_listen_topic_textunderline*|*1* = underline,<br> *0* = not underline|
 |*mqtt_listen_topic_barcode*| \<barcodetype\>\|\<barcode_value\><br> e.g. 7\|HelloMaster|
 |*mqtt_listen_topic_papercheck*| **readonly!**<br> - yes<br>- no |
+|*mqtt_listen_topic_textupsidedown*|*1* = upside down,<br> *0* = regular orientation|
 
 \*defined in config-file above
 
 # Credits
 - [HutchieV](https://github.com/HutchieV) for [ESP8266 MQTT Thermal Printer](https://github.com/HutchieV/ESP8266-MQTT-Thermal-Printer)
+- [BeardedTinkerer](https://github.com/BeardedTinker) for [ESP8266 MQTT Thermal Printer](https://github.com/BeardedTinker/ESP8266-MQTT-Thermal-Printer-for-HA)
